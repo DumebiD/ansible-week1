@@ -1,0 +1,21 @@
+---
+
+# Gather facts and apply a task conditionally based on real host state (`when:`), and loop correctly over a list of items instead of repeating tasks.
+
+- name: Loop over text
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+   package_manager: "apt"
+   text:
+     - "apple"
+     - "banana"
+     - "cucumber"
+
+  tasks:
+    - name: Run Loop Based on Package Manager
+      ansible.builtin.debug:
+        msg: "{{ item }}"
+      loop: "{{ text }}"
+      when: ansible_facts['pkg_mgr'] == package_manager

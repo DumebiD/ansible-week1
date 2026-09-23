@@ -1,0 +1,21 @@
+---
+- name: Apply security rules for SSH
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Configure SSH hardening
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin prohibit-password' }
+        - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' }
+      notify: Restart SSH
+
+  handlers:
+    - name: Restart SSH
+      ansible.builtin.systemd:
+       name: sshd
+       state: restarted

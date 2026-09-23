@@ -1,0 +1,19 @@
+---
+
+- name: Restart Healthbeat Service
+  hosts: all
+  become: true
+
+  tasks:
+  - name: Get service facts
+    ansible.builtin.service_facts:
+
+  - name: Show Healthbeat State
+    ansible.builtin.debug:
+     var: ansible_facts.services["healthbeat.service"].state
+
+  - name: Ensure Healthbeat Service is Running
+    ansible.builtin.service:
+     service: healthbeat
+     state: started
+     enabled: true

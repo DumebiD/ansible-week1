@@ -1,0 +1,14 @@
+---
+
+- name: Change Config Permissions
+  hosts: all
+  become: true
+
+  tasks:
+  - name: Changing the file permissions
+    file:
+     path: /etc/appconfig/db_credentials.conf
+     owner: root
+     group: root
+     mode: '0644'
+    no_log: true

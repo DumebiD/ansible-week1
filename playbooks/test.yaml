@@ -1,0 +1,8 @@
+- name: Overwrite Cron Healthscript
+  hosts: all
+
+  tasks:
+  - name: Test
+    ansible.builtin.copy:
+      dest: /home/dumebi/ansible_test.txt
+      content: "hello"

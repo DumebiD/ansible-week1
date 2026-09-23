@@ -1,0 +1,14 @@
+- name: Setting DB Config
+  hosts: all
+  become: true
+  vars_files:
+    - "{{ playbook_dir }}/../vars/my_secrets.yaml"
+  tasks:
+  - name: Load the database password
+    ansible.builtin.template:
+     src: "{{ playbook_dir }}/../templates/T6.conf.j2"
+     dest: /usr/local/bin/T6.conf
+     owner: root
+     group: root
+     mode: '0644'
+    no_log: true

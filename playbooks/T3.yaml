@@ -1,0 +1,12 @@
+---
+
+- name: Overwrite Cron Healthscript
+  hosts: all
+  become: true
+  
+  tasks:
+  - name: Copy Correct Healthscript Content
+    ansible.builtin.template:
+      src: "{{ playbook_dir }}/../templates/health_ping.sh.j2"
+      dest: /usr/local/bin/healthping.sh
+

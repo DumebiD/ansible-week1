@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "$(date '+%Y-%m-%d %H:%M:%S') - health check start" >> /var/log/healthping.log
+/usr/local/bin/notifyping.sh "healthcheck ran" 2>> /var/log/healthping.log
+echo "$(date '+%Y-%m-%d %H:%M:%S') - health check done" >> /var/log/healthping.log
