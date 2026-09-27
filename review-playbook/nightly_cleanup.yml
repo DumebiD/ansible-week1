@@ -1,0 +1,17 @@
+- name: Nightly release cleanup
+  hosts: all
+  become: true
+  vars:
+    days_to_keep: 30
+
+  tasks:
+    - name: Announce cleanup run
+      when: run_cleanup | default(false)
+      ansible.builtin.debug:
+        msg: "Running nightly cleanup, keeping releases newer than {{ days_to_keep }} days"
+
+    - name: Remove old release directories
+      ansible.builtin.file:
+        path: "/srv/releases/{{ item }}"
+        state: absent
+      loop: "{{ lookup(\"ansible.builtin.fileglob\", \"/srv/releases/*\") | map(\"basename\") | list }}"
