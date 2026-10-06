@@ -357,6 +357,12 @@ Find out what this means
 running as another user. To avoid this, create the remote_tmp dir with the correct permissions manually
 ```
 
+Using roles:
+```bash
+# tip: you can setup roles using ansible galaxy
+ansible-galaxy init roles/T10_base
+```
+
 ---
 
 **T11 — Drift detection**

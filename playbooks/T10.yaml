@@ -2,48 +2,6 @@
 - name: Apply security rules for SSH and Firewall Hardening
   hosts: all
   become: true
-
-  tasks:
-    - name: Configure SSH hardening
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: "{{ item.regexp }}"
-        line: "{{ item.line }}"
-      loop:
-        - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin prohibit-password' }
-        - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' }
-      notify: Restart SSH
-
-    - name: Set incoming policies to deny
-      community.general.ufw:
-        direction: incoming
-        default: deny
-
-    - name: Set default outgoing to allow
-      community.general.ufw:
-        direction: outgoing
-        default: allow
-
-    - name: Allow SSH connections
-      community.general.ufw:
-        rule: allow
-        port: '22'
-        proto: tcp
-        comment: 'Allow SSH access'
-
-    - name: 'Allow connections to port 8081'
-      community.general.ufw:
-        rule: allow
-        port: '8081'
-        proto: tcp
-        comment: 'Allow 8081 access'
-
-    - name: Enable UFW
-      community.general.ufw:
-        state: enabled
-
-  handlers:
-    - name: Restart SSH
-      ansible.builtin.systemd:
-       name: sshd
-       state: restarted
+  roles:
+    - T10_base
+  
