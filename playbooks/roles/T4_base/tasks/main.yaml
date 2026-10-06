@@ -1,0 +1,6 @@
+---
+- name: Change conf file
+  ansible.builtin.template:
+   src: T4.conf.j2
+   dest: /home/dumebi/T4.conf
+  notify: Restart service

@@ -3,18 +3,5 @@
 - name: Restart service on conf change
   hosts: all
   become: true
-  vars:
-    - db_user: "John"
-
-  tasks:
-   - name: Change conf file
-     ansible.builtin.template:
-      src: "{{ playbook_dir }}/../templates/T4.conf.j2"
-      dest: /home/dumebi/T4.conf
-     notify: Restart service
-  
-  handlers:
-   - name: Restart service
-     ansible.builtin.service:
-      service: cron
-      state: restarted
+  roles:
+    - T4_base

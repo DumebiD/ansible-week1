@@ -13,7 +13,7 @@
      var: ansible_facts.services["healthbeat.service"].state
 
   - name: Ensure Healthbeat Service is Running
-    ansible.builtin.service:
-     service: healthbeat
+    ansible.builtin.systemd:
+     name: healthbeat
      state: started
      enabled: true

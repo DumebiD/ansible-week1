@@ -153,7 +153,7 @@ db_user={{ db_user }}
      path: /etc/appconfig/db_credentials.conf
      owner: root
      group: root
-     mode: '0644'
+     mode: '0640'
     no_log: true
 ```
 
@@ -284,8 +284,8 @@ We shall run a task that prints some things depending on the value of a simple v
      var: ansible_facts.services["healthbeat.service"].state
 
   - name: Ensure Healthbeat Service is Running
-    ansible.builtin.service:
-     service: healthbeat
+    ansible.builtin.systemd:
+     name: healthbeat
      state: started
      enabled: true
 ```
@@ -315,6 +315,34 @@ Notify calls the handler that was defined in the handlers section
         - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin prohibit-password' }
         - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' }
       notify: Restart SSH
+
+     - name: Set incoming policies to deny
+      community.general.ufw:
+        direction: incoming
+        default: deny
+
+    - name: Set default outgoing to allow
+      community.general.ufw:
+        direction: outgoing
+        default: allow
+
+    - name: Allow SSH connections
+      community.general.ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+        comment: 'Allow SSH access'
+
+    - name: 'Allow connections to port 8081'
+      community.general.ufw:
+        rule: allow
+        port: '8081'
+        proto: tcp
+        comment: 'Allow 8081 access'
+
+    - name: Enable UFW
+      community.general.ufw:
+        state: enabled
 
   handlers:
     - name: Restart SSH
@@ -445,6 +473,8 @@ So use find module instead
       ansible.builtin.find:
         paths: /srv/releases
         file_type: directory
+        age: "{{ days_to_keep }}d"
+        age_stamp: mtime
         recurse: true
       register: found_dirs
 
