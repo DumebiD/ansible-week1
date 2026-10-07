@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "$(date '+%Y-%m-%d %H:%M:%S') Starting deployment" >> /var/log/appdeploy/deploy.log
+echo "$(date '+%Y-%m-%d %H:%M:%S') Running pre-flight checks" >> /var/log/appdeploy/deploy.log
+echo "$(date '+%Y-%m-%d %H:%M:%S') NOTIFY: deploy starting" >> /var/log/appdeploy/notify.log
+echo "$(date '+%Y-%m-%d %H:%M:%S') Syncing release artifacts" >> /var/log/appdeploy/deploy.log
+echo "$(date '+%Y-%m-%d %H:%M:%S') Restarting application" >> /var/log/appdeploy/deploy.log
+echo "$(date '+%Y-%m-%d %H:%M:%S') Deployment finished" >> /var/log/appdeploy/deploy.log

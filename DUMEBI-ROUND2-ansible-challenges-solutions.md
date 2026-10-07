@@ -42,7 +42,27 @@ Run the playbook
 ansible-playbook --ask-become-pass deploy_script_cron.yaml
 # enter become password
 ```
+```bash
+---
 
+- name: Deploy Script with cron
+  hosts: all
+  become: true
+  
+  tasks:
+  - name: Write Deploy Script
+    ansible.builtin.template:
+      src: "{{ playbook_dir }}/../templates/T2.sh.j2"
+      dest: /usr/local/bin/T2.sh
+
+  - name: Schedule with Cron
+    ansible.builtin.cron:
+     name: "App deploy script"
+     minute: "*/5"
+     state: present
+     job: "/usr/local/bin/T2.sh"
+
+```
 
 
 View the original content

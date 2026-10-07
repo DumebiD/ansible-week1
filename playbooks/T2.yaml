@@ -1,0 +1,26 @@
+---
+
+- name: Deploy Script with cron
+  hosts: all
+  become: true
+  
+  tasks:
+  - name: Create appdeploy directory
+    ansible.builtin.file:
+     path: /var/log/appdeploy
+     state: directory
+     mode: '0777'
+
+  - name: Write Deploy Script
+    ansible.builtin.template:
+      src: "{{ playbook_dir }}/../templates/T2.sh.j2"
+      dest: /usr/local/bin/T2.sh
+      mode: '0755'
+
+  - name: Schedule with Cron
+    ansible.builtin.cron:
+     name: "App deploy script"
+     minute: "*/5"
+     state: present
+     job: "/usr/local/bin/T2.sh"
+
